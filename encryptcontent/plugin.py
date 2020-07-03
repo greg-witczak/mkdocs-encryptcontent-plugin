@@ -30,7 +30,8 @@ with open(DECRYPT_FORM_TPL_PATH, 'r') as template:
 
 settings = {
     'title_prefix': '[Protected] ',
-    'summary': 'This content is protected with AES encryption. '
+    'summary': 'This content is protected with AES encryption. ',
+    'placeholder': 'Provide password and press ENTER'
 }
 
 
@@ -40,6 +41,7 @@ class encryptContentPlugin(BasePlugin):
     config_scheme = (
         ('title_prefix', mkdocs.config.config_options.Type(string_types, default=str(settings['title_prefix']))),
         ('summary', mkdocs.config.config_options.Type(string_types, default=str(settings['summary']))),
+        ('placeholder', mkdocs.config.config_options.Type(string_types, default=str(settings['placeholder']))),
         ('global_password', mkdocs.config.config_options.Type(string_types, default=None)),
         ('password', mkdocs.config.config_options.Type(string_types, default=None)),
         ('hljs', mkdocs.config.config_options.Type(bool, default=False)),
@@ -74,6 +76,7 @@ class encryptContentPlugin(BasePlugin):
         hljs = self.hljs
         decrypt_form = Template(DECRYPT_FORM_TPL).render({
             'summary': self.summary,
+            'placeholder': self.placeholder,
             # this benign decoding is necessary before writing to the template, 
             # otherwise the output string will be wrapped with b''
             'ciphertext_bundle': b';'.join(ciphertext_bundle).decode('ascii'),
@@ -104,6 +107,9 @@ class encryptContentPlugin(BasePlugin):
         # Check if summary description is set on plugin configuration to overwrite
         summary = plugin_config.get('summary')
         setattr(self, 'summary', summary)
+        # Check if placeholder description is set on plugin configuration to overwrite
+        placeholder = plugin_config.get('placeholder')
+        setattr(self, 'placeholder', placeholder)
         # Check if hljs is enable in theme config
         setattr(self, 'hljs', None)
         if 'highlightjs' in config['theme']._vars:

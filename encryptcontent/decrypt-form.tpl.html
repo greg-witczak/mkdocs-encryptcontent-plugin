@@ -2,7 +2,7 @@
 <div id="mkdocs-decrypted-content">
     <form id="mkdocs-decrypt-form">
         <h1>{{ summary }}</h1>
-        <input type="password" id="mkdocs-content-password" placeholder="Provide password and press enter" />
+        <input type="password" id="mkdocs-content-password" placeholder="{{ placeholder }}" />
         <p id="mkdocs-decrypt-msg"></p>
     </form>
 </div>
@@ -83,5 +83,9 @@
             });
         };
         document.addEventListener('DOMContentLoaded', init_decryptor);
+
+        // Adjust password field width to placeholder length
+        let input = document.getElementById("mkdocs-content-password");
+        input.setAttribute('size',input.getAttribute('placeholder').length);
     })();
 </script>
