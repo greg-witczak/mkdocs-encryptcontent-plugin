@@ -31,7 +31,9 @@ with open(DECRYPT_FORM_TPL_PATH, 'r') as template:
 settings = {
     'title_prefix': '[Protected] ',
     'summary': 'This content is protected with AES encryption. ',
-    'placeholder': 'Provide password and press ENTER'
+    'placeholder': 'Provide password and press ENTER',
+    'password_button': False,
+    'password_button_text': "Decrypt"
 }
 
 
@@ -45,6 +47,8 @@ class encryptContentPlugin(BasePlugin):
         ('global_password', mkdocs.config.config_options.Type(string_types, default=None)),
         ('password', mkdocs.config.config_options.Type(string_types, default=None)),
         ('hljs', mkdocs.config.config_options.Type(bool, default=False)),
+        ('password_button', mkdocs.config.config_options.Type(bool, default=settings['password_button'])),
+        ('password_button_text', mkdocs.config.config_options.Type(string_types, default=str(settings['password_button_text']))),
     )
 
     def __hash_md5__(self, text):
@@ -77,6 +81,8 @@ class encryptContentPlugin(BasePlugin):
         decrypt_form = Template(DECRYPT_FORM_TPL).render({
             'summary': self.summary,
             'placeholder': self.placeholder,
+            'password_button': self.password_button,
+            'password_button_text': self.password_button_text,
             # this benign decoding is necessary before writing to the template, 
             # otherwise the output string will be wrapped with b''
             'ciphertext_bundle': b';'.join(ciphertext_bundle).decode('ascii'),
@@ -110,6 +116,13 @@ class encryptContentPlugin(BasePlugin):
         # Check if placeholder description is set on plugin configuration to overwrite
         placeholder = plugin_config.get('placeholder')
         setattr(self, 'placeholder', placeholder)
+        # Check if password_button description is set on plugin configuration to overwrite
+        password_button = plugin_config.get('password_button')
+        setattr(self, 'password_button', password_button)
+        # Check if password_button_text description is set on plugin configuration to overwrite
+        password_button_text = plugin_config.get('password_button_text')
+        setattr(self, 'password_button_text', password_button_text)
+
         # Check if hljs is enable in theme config
         setattr(self, 'hljs', None)
         if 'highlightjs' in config['theme']._vars:
