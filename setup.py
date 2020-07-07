@@ -10,14 +10,15 @@ def read(fname):
 
 setup(
     name='mkdocs-encryptcontent-plugin-gw',
-    version='0.0.3f',
+    version='0.0.3.1',
     author='greg-witczak',
-    author_email='6830461+greg-witczak@users.noreply.github.com',
+    author_email='gogowitczak@gmail.com',
     description='A fork of MkDocs plugin that encrypt/decrypt markdown content with AES',
     long_description=read('README.md'),
     long_description_content_type='text/markdown',
     keywords='mkdocs python markdown encrypt decrypt content',
     url='https://github.com/greg-witczak/mkdocs-encryptcontent-plugin-gw',
+    download_url='https://github.com/greg-witczak/mkdocs-encryptcontent-plugin-gw/archive/0.0.3.1.tar.gz',
     license='MIT',
     python_requires='>=2.7.9,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*',
     install_requires=[
