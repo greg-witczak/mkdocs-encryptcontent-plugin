@@ -1,7 +1,7 @@
 <div id="mkdocs-encrypted-content" style="display:none">{{ ciphertext_bundle }}</div>
 <div id="mkdocs-decrypted-content">
     <form id="mkdocs-decrypt-form">
-        <h1>{{ summary }}</h1>
+        <p>{{ summary }}</p>
         <input type="password" id="mkdocs-content-password" placeholder="{{ placeholder }}" />
         {% if password_button %}
         <button id="mkdocs-decrypt-button" class="md-button">{{ password_button_text }}</button>
@@ -65,22 +65,28 @@
                 if (content) {
                     // success; display the decrypted content
                     decrypted_content.innerHTML = content;
+
+                    encrypted_content.parentNode.removeChild(encrypted_content.parentElement.getElementsByTagName('h1')[0]); // h1 header
                     encrypted_content.parentNode.removeChild(encrypted_content);
+
                     // any post processing on the decrypted content should be done here
-                    {% if hljs %}
+                    //{% if hljs %}
                     document.getElementById("mkdocs-decrypted-content").querySelectorAll('pre code').forEach((block) => {
                         hljs.highlightBlock(block);
                     });
-                    {% endif %}
+                    //{% endif %}
+                    //{% if password_button %}
+                    localStorage.setItem('password', password_input.value);
+                    //{% endif %}
                 } else {
                     // Create HTML element for the informe message
                     var decrypt_msg = document.createElement('p');
                     decrypt_msg.setAttribute('id', 'mkdocs-decrypt-msg')
-                    var node = document.createTextNode('Content decryption failed !')
+                    var node = document.createTextNode('{{ decryption_failure_message }}')
 
                     decrypt_msg.appendChild(node)
 
-                    decrypt_msg.style = "opacity: 0; transition: opacity 2s; transition: opacity 2s;"
+                    decrypt_msg.style = "opacity: 0; transition: opacity 0.5s;";
 
                     var mkdocs_decrypt_msg = document.getElementById('mkdocs-decrypt-msg');
                     // clear all previous failure messages
@@ -91,7 +97,7 @@
                     password_input.value = '';
                     password_input.focus();
 
-                    decrypt_msg.style = "opacity: 1; transition: opacity 2s; transition: opacity 2s;"
+                    decrypt_msg.style = "opacity: 1; transition: opacity 0.5s;";
                 }
             }
 
@@ -107,13 +113,21 @@
                     decryptAction();
                 }
             });
+
+            // Adjust password field width to placeholder length
+            let input = document.getElementById("mkdocs-content-password");
+            input.setAttribute('size', input.getAttribute('placeholder').length);
+
+            //{% if password_button %}
+            let savedPassword = localStorage.getItem('password');
+            if (savedPassword != null) {
+                password_input.value = savedPassword;
+                decryptAction();
+            }
+            //{% endif %}
         };
 
         document.addEventListener('DOMContentLoaded', init_decryptor);
 
-
-        // Adjust password field width to placeholder length
-        let input = document.getElementById("mkdocs-content-password");
-        input.setAttribute('size',input.getAttribute('placeholder').length);
     })();
 </script>

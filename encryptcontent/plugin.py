@@ -33,7 +33,9 @@ settings = {
     'summary': 'This content is protected with AES encryption. ',
     'placeholder': 'Provide password and press ENTER',
     'password_button': False,
-    'password_button_text': "Decrypt"
+    'password_button_text': 'Decrypt',
+    'decryption_failure_message': 'Invalid password.',
+    'save_password_in_local_storage': False,
 }
 
 
@@ -49,6 +51,8 @@ class encryptContentPlugin(BasePlugin):
         ('hljs', mkdocs.config.config_options.Type(bool, default=False)),
         ('password_button', mkdocs.config.config_options.Type(bool, default=settings['password_button'])),
         ('password_button_text', mkdocs.config.config_options.Type(string_types, default=str(settings['password_button_text']))),
+        ('decryption_failure_message', mkdocs.config.config_options.Type(string_types, default=str(settings['decryption_failure_message']))),
+        ('save_password_in_local_storage', mkdocs.config.config_options.Type(bool, default=settings['save_password_in_local_storage'])),
     )
 
     def __hash_md5__(self, text):
@@ -83,6 +87,7 @@ class encryptContentPlugin(BasePlugin):
             'placeholder': self.placeholder,
             'password_button': self.password_button,
             'password_button_text': self.password_button_text,
+            'decryption_failure_message': self.decryption_failure_message,
             # this benign decoding is necessary before writing to the template, 
             # otherwise the output string will be wrapped with b''
             'ciphertext_bundle': b';'.join(ciphertext_bundle).decode('ascii'),
@@ -122,6 +127,9 @@ class encryptContentPlugin(BasePlugin):
         # Check if password_button_text description is set on plugin configuration to overwrite
         password_button_text = plugin_config.get('password_button_text')
         setattr(self, 'password_button_text', password_button_text)
+        # Check if decryption_failure_message description is set on plugin configuration to overwrite
+        decryption_failure_message = plugin_config.get('decryption_failure_message')
+        setattr(self, 'decryption_failure_message', decryption_failure_message)
 
         # Check if hljs is enable in theme config
         setattr(self, 'hljs', None)
