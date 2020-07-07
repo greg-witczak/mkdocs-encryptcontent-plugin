@@ -187,3 +187,4 @@ class encryptContentPlugin(BasePlugin):
                 html = self.__encrypt_content__(html)
         return html
 
+# pip uninstall -y mkdocs-encryptcontent-plugin-gw && python3 setup.py sdist bdist_wheel && pip3 install dist/mkdocs_encryptcontent_plugin_gw-0.0.3f-py3-none-any.whl && cd /workspace/program/java-pl-projectplus-quiz && rm -Rf public _static && /workspace/tech/build.sh --dev --docs && cd -

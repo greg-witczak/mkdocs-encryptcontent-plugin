@@ -75,9 +75,9 @@
                         hljs.highlightBlock(block);
                     });
                     //{% endif %}
-                    //{% if password_button %}
+                    //{% if save_password_in_local_storage %}
                     localStorage.setItem('password', password_input.value);
-                    //{% endif %}
+                    //{% endif %}s
                 } else {
                     // Create HTML element for the informe message
                     var decrypt_msg = document.createElement('p');
@@ -118,7 +118,7 @@
             let input = document.getElementById("mkdocs-content-password");
             input.setAttribute('size', input.getAttribute('placeholder').length);
 
-            //{% if password_button %}
+            //{% if save_password_in_local_storage %}
             let savedPassword = localStorage.getItem('password');
             if (savedPassword != null) {
                 password_input.value = savedPassword;

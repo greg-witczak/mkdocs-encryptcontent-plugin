@@ -4,7 +4,7 @@ with import <nixpkgs> {};
 with pkgs.python3Packages;
 
 buildPythonPackage rec {
-  name = "mkdocs-encryptcontent-plugin";
+  name = "gw-mkdocs-encryptcontent-plugin";
   src = ./.;
   propagatedBuildInputs = [ ];
 }
