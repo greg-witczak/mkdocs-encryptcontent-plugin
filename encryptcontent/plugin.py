@@ -88,6 +88,7 @@ class encryptContentPlugin(BasePlugin):
             'password_button': self.password_button,
             'password_button_text': self.password_button_text,
             'decryption_failure_message': self.decryption_failure_message,
+            'save_password_in_local_storage': self.save_password_in_local_storage,
             # this benign decoding is necessary before writing to the template, 
             # otherwise the output string will be wrapped with b''
             'ciphertext_bundle': b';'.join(ciphertext_bundle).decode('ascii'),
@@ -130,6 +131,9 @@ class encryptContentPlugin(BasePlugin):
         # Check if decryption_failure_message description is set on plugin configuration to overwrite
         decryption_failure_message = plugin_config.get('decryption_failure_message')
         setattr(self, 'decryption_failure_message', decryption_failure_message)
+        # Check if save_password_in_local_storage is set on plugin configuration to overwrite
+        save_password_in_local_storage = plugin_config.get('save_password_in_local_storage')
+        setattr(self, 'save_password_in_local_storage', save_password_in_local_storage)
 
         # Check if hljs is enable in theme config
         setattr(self, 'hljs', None)
